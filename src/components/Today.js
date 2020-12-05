@@ -1,5 +1,7 @@
 import styled from 'styled-components/macro';
+import ReactTooltip from 'react-tooltip';
 import colors from '../constants/colors';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const { juneBud } = colors;
 
@@ -38,10 +40,37 @@ const Today = () => {
       </TodayHeader>
       <StartTypingBox>Start typing ...</StartTypingBox>
       {/* <StartTypingBox /> */}
-      <TaskItem>Task</TaskItem>
-      <TaskItem>Task</TaskItem>
-      <TaskItem>Task</TaskItem>
-      <TaskItem>Task</TaskItem>
+      <TaskItem>
+        <Checkbox type="checkbox" css="display:inline;" />
+        <p css="display:inline;">Task</p>
+        <div css="float:right; margin-right: 5px;">
+          <button>Start</button>
+          <button data-tip="actions" data-event="click">
+            Menu
+          </button>
+          <ReactTooltip>
+            <li>Delete</li>
+            <li>Duplicate</li>
+          </ReactTooltip>
+        </div>
+      </TaskItem>
+
+      <TaskItem>
+        <Checkbox type="checkbox" css="display:inline;" />
+        <p css="display:inline;">Task</p>
+        <div css="float:right; margin-right: 5px;">
+          <button>Pomodoro</button>
+          <button>Menu</button>
+        </div>
+      </TaskItem>
+      <TaskItem>
+        <Checkbox type="checkbox" css="display:inline;" />
+        <p css="display:inline;">Task</p>
+        <div css="float:right; margin-right: 5px;">
+          <button>Pomodoro</button>
+          <button>Menu</button>
+        </div>
+      </TaskItem>
     </TodayBox>
   );
 };
