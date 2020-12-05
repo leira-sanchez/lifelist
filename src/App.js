@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -10,6 +11,17 @@ const BoxContainer = styled.div`
 `;
 
 const App = () => {
+  useEffect(() => {
+    const storage = localStorage.getItem('lifelist');
+    const lifelist = {
+      today: {},
+      tomorrow: {},
+    };
+    if (!storage) {
+      localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    }
+    console.table(JSON.parse(storage));
+  });
   return (
     <>
       <Navbar />

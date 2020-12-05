@@ -21,7 +21,7 @@ const TodayHeader = styled.div`
 const StartTypingBox = styled.div`
   width: 100%;
   /* outline: 2px red solid; */
-  padding: 10px 0;
+  padding: 20px 0;
   border-bottom: 2px solid black;
 `;
 
