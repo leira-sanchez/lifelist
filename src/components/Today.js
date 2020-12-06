@@ -68,33 +68,49 @@ const ButtonItem = styled.button`
   color: white;
   cursor: pointer;
   padding: 10px;
+
+  :hover {
+    background-color: lightgray;
+  }
 `;
 
 const StyledToolTip = styled(ReactTooltip)`
   width: max-content;
   opacity: 1 !important;
+  cursor: pointer;
 `;
 const Today = () => {
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
+  const [newTask, setNewTask] = useState('');
 
   const submitTask = (e) => {
     e.preventDefault();
-    const newTask = {
+    const newTaskObj = {
       id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
 
     const lifelist = {
-      today: [...today, newTask],
-      tomorrow: { ...tomorrow },
+      today: [...today, newTaskObj],
+      tomorrow: tomorrow,
     };
     setToday(lifelist.today);
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setNewTask('');
   };
 
-  // TODO: ponerlas al reves
+  const deleteTask = (taskId) => {
+    console.log('in the delete task');
+    today.forEach((task) => {
+      if (task.id === taskId) {
+        delete today.task;
+      }
+    });
+    console.log({ today });
+  };
+
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
@@ -111,15 +127,27 @@ const Today = () => {
             effect="solid"
             place="left"
           >
-            <ButtonItem>Delete</ButtonItem>
+            <ButtonItem
+              onClick={() => {
+                deleteTask(task.id);
+                console.log('clicked delete');
+              }}
+            >
+              Delete
+            </ButtonItem>
             <ButtonItem>Duplicate</ButtonItem>
             <ButtonItem>Move to Tomorrow</ButtonItem>
+            <ButtonItem>Add Tags</ButtonItem>
             <ButtonItem isLast>Make Recurring</ButtonItem>
           </StyledToolTip>
         </div>
       </TaskItem>
     ))
     .reverse();
+
+  const onChange = (e) => {
+    setNewTask(e.target.value);
+  };
 
   useEffect(() => {
     const storage = localStorage.getItem('lifelist');
@@ -143,7 +171,13 @@ const Today = () => {
         <h2 css=" padding: 10px 0; margin:0; text-align:center;">Today</h2>
       </TodayHeader>
       <form type="submit" onSubmit={(e) => submitTask(e)}>
-        <StartTypingBox type="text" placeholder="Start typing..." autoFocus />
+        <StartTypingBox
+          type="text"
+          placeholder="Start typing..."
+          autoFocus
+          value={newTask}
+          onChange={onChange}
+        />
       </form>
       {todayItems}
     </TodayBox>
