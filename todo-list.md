@@ -6,8 +6,8 @@
 - [ ] create design system
 - [ ] storybook?
 
-
 ## Features
 
 - [ ] Save to localStorage
 - [ ] Clear
+- [ ] Calendar View

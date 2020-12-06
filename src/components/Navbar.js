@@ -5,7 +5,9 @@ const { starCommandBlue } = colors;
 
 const Header = styled.header`
   width: 100%;
-  background-color: ${starCommandBlue};
+  background-color: #5fa8d3;
+  /* background-color: #1b4965; */
+  /* background-color: ${starCommandBlue}; */
   color: white;
   margin: 0;
   display: flex;

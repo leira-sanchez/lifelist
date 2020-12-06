@@ -20,9 +20,11 @@ const TodayBox = styled.div`
 const TodayHeader = styled.div`
   width: 100%;
   /* outline: 2px red solid; */
-  background-color: ${juneBud};
+  background-color: #1b4965;
+  /* background-color: ${juneBud}; */
   border-radius: 4px 4px 0 0;
   border-bottom: 2px solid lightgray;
+  color: white;
 `;
 
 const StartTypingBox = styled.input`
@@ -50,56 +52,69 @@ const TaskItem = styled.div`
 `;
 
 const Today = () => {
-  const [today, setToday] = useState({});
-  const [tomorrow, setTomorrow] = useState({});
+  const [today, setToday] = useState([]);
+  const [tomorrow, setTomorrow] = useState([]);
 
   const submitTask = (e) => {
     e.preventDefault();
     console.log('submitting');
-    const newTask = e.target[0].value;
-    console.log({ newTask });
-    const newTodayTasks = {
-      newTask,
+    // const newTask = e.target[0].value;
+    // console.log({ newTask });
+    const newTask = {
+      id: today.length + 1,
+      name: e.target[0].value,
+      created: Date.now(),
     };
+
+    console.log(...today);
     const lifelist = {
-      today: { ...today, newTask },
+      today: [...today, newTask],
       tomorrow: { ...tomorrow },
     };
-    setToday(newTodayTasks);
+    setToday(lifelist.today);
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
   };
 
-  const todayItems = Object.entries(today).map((task) => {
-    <TaskItem>
-      <Checkbox type="checkbox" css="display:inline;" />
-      <p css="display:inline;">Task</p>
-      <div css="float:right; margin-right: 5px;">
-        <button>Start</button>
-        <button data-tip="actions" data-event="click">
-          Menu
-        </button>
-        <ReactTooltip>
-          <li>Delete</li>
-          <li>Duplicate</li>
-        </ReactTooltip>
-      </div>
-    </TaskItem>;
-  });
+  const todayItems = today.map((task, index) =>
+    task.name ? (
+      // const todayItems = Object.entries(today).map((task, index) => (
+      <TaskItem key={index}>
+        {/* <TaskItem key={index} css="background-color: #bee9e8;"> */}
+        {/* <TaskItem key={index} css="background-color: #cae9ff;"> */}
+        <Checkbox type="checkbox" css="display:inline;" />
+        <p css="display:inline;">{task.name}</p>
+        <div css="float:right; margin-right: 5px;">
+          <button>Start</button>
+          <button data-tip="actions" data-event="click">
+            Menu
+          </button>
+          <ReactTooltip globalEventOff="click">
+            <button>Delete</button>
+            <button>Duplicate</button>
+            <button>Move to Tomorrow</button>
+            <button>Make Recurring</button>
+          </ReactTooltip>
+        </div>
+      </TaskItem>
+    ) : null
+  );
 
   useEffect(() => {
     const storage = localStorage.getItem('lifelist');
+    const parsedStorage = JSON.parse(storage);
     const lifelist = {
-      today: {},
-      tomorrow: {},
-      completed: {},
+      today: [],
+      tomorrow: [],
+      completed: [],
     };
     if (!storage) {
       localStorage.setItem('lifelist', JSON.stringify(lifelist));
     } else {
-      setToday(storage.today);
-      setTomorrow(storage.tomorrow);
+      setToday(parsedStorage.today);
+      setTomorrow(parsedStorage.tomorrow);
     }
-    console.table(JSON.parse(storage));
+
+    console.log(JSON.parse(storage));
   }, []);
 
   return (
@@ -112,23 +127,6 @@ const Today = () => {
         <StartTypingBox type="text" placeholder="Start typing ..." autoFocus />
       </form>
       {todayItems}
-
-      <TaskItem>
-        <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">Task</p>
-        <div css="float:right; margin-right: 5px;">
-          <button>Pomodoro</button>
-          <button>Menu</button>
-        </div>
-      </TaskItem>
-      <TaskItem>
-        <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">Task</p>
-        <div css="float:right; margin-right: 5px;">
-          <button>Pomodoro</button>
-          <button>Menu</button>
-        </div>
-      </TaskItem>
     </TodayBox>
   );
 };
