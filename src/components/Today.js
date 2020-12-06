@@ -1,29 +1,31 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
-import colors from '../constants/colors';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const { juneBud } = colors;
+const ActionMenuButton = styled.button`
+  font-weight: bold;
+  font-size: 2em;
+  background-color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  :hover {
+    background-color: lightgray;
+    border-radius: 5px;
+  }
+`;
 
 const TodayBox = styled.div`
-  border: 2px solid white;
-  border-radius: 5px;
   width: 40%;
-  height: 50vh;
-
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
 `;
 
 const TodayHeader = styled.div`
   width: 100%;
-  /* outline: 2px red solid; */
   background-color: #1b4965;
-  /* background-color: ${juneBud}; */
-  border-radius: 4px 4px 0 0;
-  border-bottom: 2px solid lightgray;
+  border-left: 2px solid #1b4965;
+  border-right: 2px solid #1b4965;
   color: white;
 `;
 
@@ -33,10 +35,10 @@ const StartTypingBox = styled.input`
   outline: none;
   padding: 20px 0;
   padding-left: 20px;
-  border-bottom: 2px solid lightgray;
-  border-right: none;
-  border-left: none;
   border-top: none;
+  border-bottom: 2px solid lightgray;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
   font-size: 1.2em;
 
   ::placeholder {
@@ -46,27 +48,44 @@ const StartTypingBox = styled.input`
 
 const TaskItem = styled.div`
   width: 100%;
-  /* outline: 2px red solid; */
   padding: 10px 0;
   border-bottom: 2px solid lightgray;
+  border-left: 2px solid lightgray;
+  border-right: 2px solid lightgray;
+  border-radius: ${({ idx }) => {
+    return idx === 0 ? '0 0 5px 5px' : 'none';
+  }};
 `;
 
+const ButtonItem = styled.button`
+  background-color: #393939;
+  /* background-color: #bee9e8; */
+  outline: none;
+  border: none;
+  border-bottom: ${({ isLast }) => (isLast ? 'none' : '1px solid lightgray')};
+  display: block;
+  width: 100%;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+`;
+
+const StyledToolTip = styled(ReactTooltip)`
+  width: max-content;
+  opacity: 1 !important;
+`;
 const Today = () => {
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
 
   const submitTask = (e) => {
     e.preventDefault();
-    console.log('submitting');
-    // const newTask = e.target[0].value;
-    // console.log({ newTask });
     const newTask = {
-      id: today.length + 1,
+      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
 
-    console.log(...today);
     const lifelist = {
       today: [...today, newTask],
       tomorrow: { ...tomorrow },
@@ -75,29 +94,32 @@ const Today = () => {
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
   };
 
-  const todayItems = today.map((task, index) =>
-    task.name ? (
-      // const todayItems = Object.entries(today).map((task, index) => (
-      <TaskItem key={index}>
-        {/* <TaskItem key={index} css="background-color: #bee9e8;"> */}
-        {/* <TaskItem key={index} css="background-color: #cae9ff;"> */}
+  // TODO: ponerlas al reves
+  const todayItems = today
+    .map((task, index) => (
+      <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
         <p css="display:inline;">{task.name}</p>
         <div css="float:right; margin-right: 5px;">
           <button>Start</button>
-          <button data-tip="actions" data-event="click">
-            Menu
-          </button>
-          <ReactTooltip globalEventOff="click">
-            <button>Delete</button>
-            <button>Duplicate</button>
-            <button>Move to Tomorrow</button>
-            <button>Make Recurring</button>
-          </ReactTooltip>
+          <ActionMenuButton data-tip="actions" data-event="click">
+            &#8942;
+          </ActionMenuButton>
+          <StyledToolTip
+            backgroundColor={'#393939'}
+            globalEventOff="click"
+            effect="solid"
+            place="left"
+          >
+            <ButtonItem>Delete</ButtonItem>
+            <ButtonItem>Duplicate</ButtonItem>
+            <ButtonItem>Move to Tomorrow</ButtonItem>
+            <ButtonItem isLast>Make Recurring</ButtonItem>
+          </StyledToolTip>
         </div>
       </TaskItem>
-    ) : null
-  );
+    ))
+    .reverse();
 
   useEffect(() => {
     const storage = localStorage.getItem('lifelist');
@@ -113,8 +135,6 @@ const Today = () => {
       setToday(parsedStorage.today);
       setTomorrow(parsedStorage.tomorrow);
     }
-
-    console.log(JSON.parse(storage));
   }, []);
 
   return (
@@ -122,9 +142,8 @@ const Today = () => {
       <TodayHeader>
         <h2 css=" padding: 10px 0; margin:0; text-align:center;">Today</h2>
       </TodayHeader>
-      {/* <StartTypingBox>Start typing ...</StartTypingBox> */}
       <form type="submit" onSubmit={(e) => submitTask(e)}>
-        <StartTypingBox type="text" placeholder="Start typing ..." autoFocus />
+        <StartTypingBox type="text" placeholder="Start typing..." autoFocus />
       </form>
       {todayItems}
     </TodayBox>

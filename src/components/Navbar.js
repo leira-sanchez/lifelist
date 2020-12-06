@@ -1,13 +1,8 @@
 import styled from 'styled-components';
-import colors from '../constants/colors';
-
-const { starCommandBlue } = colors;
 
 const Header = styled.header`
   width: 100%;
   background-color: #5fa8d3;
-  /* background-color: #1b4965; */
-  /* background-color: ${starCommandBlue}; */
   color: white;
   margin: 0;
   display: flex;
