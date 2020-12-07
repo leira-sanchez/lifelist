@@ -80,7 +80,9 @@ const StyledToolTip = styled(ReactTooltip)`
   cursor: pointer;
   pointer-events: auto !important;
 `;
+
 const Today = () => {
+  const storage = localStorage.getItem('lifelist');
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -103,15 +105,9 @@ const Today = () => {
   };
 
   const deleteTask = (taskId) => {
-    console.log('in the delete task');
     let newToday;
     today.forEach((task, index) => {
       if (task.id === taskId) {
-        // delete task;
-        console.log({ taskId });
-        console.log(task.id);
-        console.log(...today.splice(index));
-        console.log(...today.splice(index));
         newToday = [...today.splice(0, index), ...today.splice(index + 1)];
       }
     });
@@ -119,21 +115,22 @@ const Today = () => {
       today: newToday,
       tomorrow: tomorrow,
     };
-    // localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    localStorage.setItem('lifelist', JSON.stringify(lifelist));
     setToday(newToday);
-    console.log({ newToday });
   };
 
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">
-          {task.name} {task.id}
-        </p>
+        <p css="display:inline;">{task.name}</p>
         <div css="float:right; margin-right: 5px;">
           <button>Start</button>
-          <ActionMenuButton data-tip="actions" data-event="click">
+          <ActionMenuButton
+            data-tip="actions"
+            data-event="click"
+            data-for={`tooltip-${task.id}`}
+          >
             &#8942;
           </ActionMenuButton>
           <StyledToolTip
@@ -141,14 +138,11 @@ const Today = () => {
             globalEventOff="click"
             effect="solid"
             place="left"
+            id={`tooltip-${task.id}`}
           >
             <ButtonItem
-              props
               onClick={() => {
-                // TODO: the wrong id is being passed here
                 deleteTask(task.id);
-                console.log(task.id);
-                console.log('clicked delete');
               }}
             >
               Delete
@@ -168,7 +162,6 @@ const Today = () => {
   };
 
   useEffect(() => {
-    const storage = localStorage.getItem('lifelist');
     const parsedStorage = JSON.parse(storage);
     const lifelist = {
       today: [],
@@ -178,10 +171,11 @@ const Today = () => {
     if (!storage) {
       localStorage.setItem('lifelist', JSON.stringify(lifelist));
     } else {
+      // this should probably happen outside of useEffect
       setToday(parsedStorage.today);
       setTomorrow(parsedStorage.tomorrow);
     }
-  }, []);
+  }, [storage]);
 
   return (
     <TodayBox>
@@ -195,6 +189,7 @@ const Today = () => {
           autoFocus
           value={newTask}
           onChange={onChange}
+          spellCheck
         />
       </form>
       {todayItems}
