@@ -119,6 +119,22 @@ const Today = () => {
     setToday(newToday);
   };
 
+  const duplicateTask = (taskId) => {
+    const duplicatedTask = {
+      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
+      name: today.find((task) => task.id === taskId).name,
+      created: Date.now(),
+    };
+    const newToday = [...today, duplicatedTask];
+    console.log({ duplicatedTask });
+    const lifelist = {
+      today: newToday,
+      tomorrow,
+    };
+    localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setToday(newToday);
+  };
+
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
@@ -140,14 +156,10 @@ const Today = () => {
             place="left"
             id={`tooltip-${task.id}`}
           >
-            <ButtonItem
-              onClick={() => {
-                deleteTask(task.id);
-              }}
-            >
-              Delete
+            <ButtonItem onClick={() => deleteTask(task.id)}>Delete</ButtonItem>
+            <ButtonItem onClick={() => duplicateTask(task.id)}>
+              Duplicate
             </ButtonItem>
-            <ButtonItem>Duplicate</ButtonItem>
             <ButtonItem>Move to Tomorrow</ButtonItem>
             <ButtonItem>Add Tags</ButtonItem>
             <ButtonItem isLast>Make Recurring</ButtonItem>
