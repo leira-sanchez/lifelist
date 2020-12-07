@@ -59,7 +59,6 @@ const TaskItem = styled.div`
 
 const ButtonItem = styled.button`
   background-color: #393939;
-  /* background-color: #bee9e8; */
   outline: none;
   border: none;
   border-bottom: ${({ isLast }) => (isLast ? 'none' : '1px solid lightgray')};
@@ -71,6 +70,7 @@ const ButtonItem = styled.button`
 
   :hover {
     background-color: lightgray;
+    color: black;
   }
 `;
 
@@ -78,6 +78,7 @@ const StyledToolTip = styled(ReactTooltip)`
   width: max-content;
   opacity: 1 !important;
   cursor: pointer;
+  pointer-events: auto !important;
 `;
 const Today = () => {
   const [today, setToday] = useState([]);
@@ -103,19 +104,33 @@ const Today = () => {
 
   const deleteTask = (taskId) => {
     console.log('in the delete task');
-    today.forEach((task) => {
+    let newToday;
+    today.forEach((task, index) => {
       if (task.id === taskId) {
-        delete today.task;
+        // delete task;
+        console.log({ taskId });
+        console.log(task.id);
+        console.log(...today.splice(index));
+        console.log(...today.splice(index));
+        newToday = [...today.splice(0, index), ...today.splice(index + 1)];
       }
     });
-    console.log({ today });
+    const lifelist = {
+      today: newToday,
+      tomorrow: tomorrow,
+    };
+    // localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setToday(newToday);
+    console.log({ newToday });
   };
 
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">{task.name}</p>
+        <p css="display:inline;">
+          {task.name} {task.id}
+        </p>
         <div css="float:right; margin-right: 5px;">
           <button>Start</button>
           <ActionMenuButton data-tip="actions" data-event="click">
@@ -128,8 +143,11 @@ const Today = () => {
             place="left"
           >
             <ButtonItem
+              props
               onClick={() => {
+                // TODO: the wrong id is being passed here
                 deleteTask(task.id);
+                console.log(task.id);
                 console.log('clicked delete');
               }}
             >

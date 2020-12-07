@@ -1,8 +1,8 @@
 # Backlog
 
-- [ ] configure prettier
+- [x] configure prettier
 - [ ] make it responsive
-- [ ] configure local storage
+- [x] configure local storage
 - [ ] create design system
 - [ ] storybook?
 - [ ] make it work w keyboard
@@ -10,7 +10,8 @@
 
 ## Features
 
-- [ ] Save to localStorage
+- [x] Save to localStorage
 - [ ] Clear
 - [ ] Calendar View
 - [ ] List view/card view
+- [ ] CLI app
