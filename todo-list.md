@@ -7,6 +7,7 @@
 - [ ] storybook?
 - [ ] make it work w keyboard
 - [ ] a11y
+- [ ] only one pomodoro at a time on Today. No pomodoro on tomorrow
 
 ## Features
 

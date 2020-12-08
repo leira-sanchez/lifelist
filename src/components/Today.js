@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -81,11 +81,20 @@ const StyledToolTip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
+const Pomodoro = styled.img`
+  :hover {
+  }
+`;
+
 const Today = () => {
   const storage = localStorage.getItem('lifelist');
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [timer, setTimer] = useState(25000 * 60);
+  const [isActive, setIsActive] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const countRef = useRef(null);
 
   const submitTask = (e) => {
     e.preventDefault();
@@ -126,7 +135,6 @@ const Today = () => {
       created: Date.now(),
     };
     const newToday = [...today, duplicatedTask];
-    console.log({ duplicatedTask });
     const lifelist = {
       today: newToday,
       tomorrow,
@@ -135,13 +143,65 @@ const Today = () => {
     setToday(newToday);
   };
 
+  const formatTime = (timer) => {
+    // console.log({ timer });
+    // const minutes = `${Math.floor(timer / 60000)}`;
+    // const getMinutes = `${minutes}`.slice(-2);
+    // console.log({ minutes });
+    // const getSeconds = `0${timer / 25000}`.slice(-2);
+    // console.log({ getSeconds });
+    const min = Math.floor((timer / 1000 / 60) << 0);
+    const sec =
+      Math.floor((timer / 1000) % 60) < 10
+        ? `0${Math.floor((timer / 1000) % 60)}`
+        : Math.floor((timer / 1000) % 60);
+
+    return `${min} : ${sec}`;
+  };
+
+  const startPomodoro = () => {
+    if (isActive) handlePause();
+    else if (isPaused) handleResume();
+    else {
+      setIsActive(true);
+      countRef.current = setInterval(() => {
+        setTimer((timer) => timer - 1000);
+      }, 1000);
+    }
+  };
+
+  const handlePause = () => {
+    clearInterval(countRef.current);
+    setIsPaused(true);
+    setIsActive(false);
+  };
+
+  const handleResume = () => {
+    setIsActive(true);
+    setIsPaused(false);
+    countRef.current = setInterval(() => {
+      setTimer((timer) => timer - 1);
+    }, 1000);
+  };
+
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">{task.name}</p>
+        <p css="display:inline;">
+          {task.name} {formatTime(timer)}
+        </p>
         <div css="float:right; margin-right: 5px;">
-          <button>Start</button>
+          <button
+            css="background-color: white; border:none;outline:none; margin-right:5px;"
+            onClick={startPomodoro}
+          >
+            <Pomodoro
+              src="Tomato.svg"
+              alt="start pomodoro for this task"
+              title="Click to start pomodoro clock for this task"
+            />
+          </button>
           <ActionMenuButton
             data-tip="actions"
             data-event="click"
