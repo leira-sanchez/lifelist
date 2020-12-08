@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import './App.css';
 import Navbar from './components/Navbar';
 import Today from './components/Today';
+import Tomorrow from './components/Tomorrow';
 
 const BoxContainer = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ const App = () => {
       <Navbar />
       <BoxContainer>
         <Today />
-        <Today />
+        {/* <Tomorrow /> */}
       </BoxContainer>
     </>
   );

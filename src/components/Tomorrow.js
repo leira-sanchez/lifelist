@@ -112,33 +112,36 @@ const Today = () => {
   const submitTask = (e) => {
     e.preventDefault();
     const newTaskObj = {
-      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
+      id: (tomorrow.length > 0 && tomorrow[tomorrow.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
 
     const lifelist = {
-      today: [...today, newTaskObj],
-      tomorrow: [...tomorrow],
+      today: [...today],
+      tomorrow: [...tomorrow, newTaskObj],
     };
-    setToday(lifelist.today);
+    setTomorrow(lifelist.tomorrow);
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
     setNewTask('');
   };
 
   const deleteTask = (taskId) => {
-    let newToday;
-    today.forEach((task, index) => {
+    let newTomorrow;
+    tomorrow.forEach((task, index) => {
       if (task.id === taskId) {
-        newToday = [...today.splice(0, index), ...today.splice(index + 1)];
+        newTomorrow = [
+          ...tomorrow.splice(0, index),
+          ...tomorrow.splice(index + 1),
+        ];
       }
     });
     const lifelist = {
-      today: newToday,
-      tomorrow: tomorrow,
+      today,
+      tomorrow: newTomorrow,
     };
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setToday(newToday);
+    setTomorrow(newTomorrow);
   };
 
   const duplicateTask = (taskId) => {
@@ -158,10 +161,12 @@ const Today = () => {
 
   const formatTime = (timer) => {
     const min = Math.floor((timer / 1000 / 60) << 0);
-    const plainSeconds = Math.floor((timer / 1000) % 60);
-    const sec = plainSeconds < 10 ? `0${plainSeconds}` : plainSeconds;
+    const sec =
+      Math.floor((timer / 1000) % 60) < 10
+        ? `0${Math.floor((timer / 1000) % 60)}`
+        : Math.floor((timer / 1000) % 60);
 
-    return `${min}:${sec}`;
+    return `${min} : ${sec}`;
   };
 
   const startPomodoro = () => {
@@ -189,7 +194,7 @@ const Today = () => {
     }, 1000);
   };
 
-  const todayItems = today
+  const tomorrowItems = tomorrow
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
@@ -259,7 +264,7 @@ const Today = () => {
   return (
     <TodayBox>
       <TodayHeader>
-        <h2 css=" padding: 10px 0; margin:0; text-align:center;">Today</h2>
+        <h2 css=" padding: 10px 0; margin:0; text-align:center;">Tomorrow</h2>
       </TodayHeader>
       <form type="submit" onSubmit={(e) => submitTask(e)}>
         <StartTypingBox
@@ -271,7 +276,7 @@ const Today = () => {
           spellCheck
         />
       </form>
-      {todayItems}
+      {tomorrowItems}
     </TodayBox>
   );
 };
