@@ -144,12 +144,6 @@ const Today = () => {
   };
 
   const formatTime = (timer) => {
-    // console.log({ timer });
-    // const minutes = `${Math.floor(timer / 60000)}`;
-    // const getMinutes = `${minutes}`.slice(-2);
-    // console.log({ minutes });
-    // const getSeconds = `0${timer / 25000}`.slice(-2);
-    // console.log({ getSeconds });
     const min = Math.floor((timer / 1000 / 60) << 0);
     const sec =
       Math.floor((timer / 1000) % 60) < 10
