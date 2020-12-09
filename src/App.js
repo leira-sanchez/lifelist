@@ -19,20 +19,34 @@ const App = () => {
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
 
-  const deleteTask = (taskId) => {
+  const deleteTask = (taskId, day) => {
     console.log({ taskId });
     let newToday;
-    today.forEach((task, index) => {
-      if (task.id === taskId) {
-        newToday = [...today.slice(0, index), ...today.slice(index + 1)];
-      }
-    });
-    const lifelist = {
-      today: newToday,
-      tomorrow: tomorrow,
-    };
+    let newTomorrow;
+    let lifelist = {};
+    if (day === 'today') {
+      today.forEach((task, index) => {
+        if (task.id === taskId) {
+          newToday = [...today.slice(0, index), ...today.slice(index + 1)];
+        }
+      });
+      lifelist.today = newToday;
+      lifelist.tomorrow = tomorrow;
+      setToday(newToday);
+    } else {
+      tomorrow.forEach((task, index) => {
+        if (task.id === taskId) {
+          newTomorrow = [
+            ...tomorrow.slice(0, index),
+            ...tomorrow.slice(index + 1),
+          ];
+        }
+      });
+      lifelist.today = today;
+      lifelist.tomorrow = newTomorrow;
+      setTomorrow(newTomorrow);
+    }
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setToday(newToday);
   };
 
   const duplicateTask = (taskId) => {
