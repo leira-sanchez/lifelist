@@ -99,47 +99,19 @@ const PomodoroButton = styled.button`
   }
 `;
 
-const Today = () => {
-  const storage = localStorage.getItem('lifelist');
-  const [today, setToday] = useState([]);
-  const [tomorrow, setTomorrow] = useState([]);
-  const [newTask, setNewTask] = useState('');
+const Today = ({
+  deleteTask,
+  onChange,
+  setToday,
+  submitTask,
+  today,
+  tomorrow,
+  newTask,
+}) => {
   const [timer, setTimer] = useState(25000 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef(null);
-
-  const submitTask = (e) => {
-    e.preventDefault();
-    const newTaskObj = {
-      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
-      name: e.target[0].value,
-      created: Date.now(),
-    };
-
-    const lifelist = {
-      today: [...today, newTaskObj],
-      tomorrow: [...tomorrow],
-    };
-    setToday(lifelist.today);
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setNewTask('');
-  };
-
-  const deleteTask = (taskId) => {
-    let newToday;
-    today.forEach((task, index) => {
-      if (task.id === taskId) {
-        newToday = [...today.splice(0, index), ...today.splice(index + 1)];
-      }
-    });
-    const lifelist = {
-      today: newToday,
-      tomorrow: tomorrow,
-    };
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setToday(newToday);
-  };
 
   const duplicateTask = (taskId) => {
     const duplicatedTask = {
@@ -235,26 +207,6 @@ const Today = () => {
       </TaskItem>
     ))
     .reverse();
-
-  const onChange = (e) => {
-    setNewTask(e.target.value);
-  };
-
-  useEffect(() => {
-    const parsedStorage = JSON.parse(storage);
-    const lifelist = {
-      today: [],
-      tomorrow: [],
-      completed: [],
-    };
-    if (!storage) {
-      localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    } else {
-      // this should probably happen outside of useEffect
-      setToday(parsedStorage.today);
-      setTomorrow(parsedStorage.tomorrow);
-    }
-  }, [storage]);
 
   return (
     <TodayBox>
