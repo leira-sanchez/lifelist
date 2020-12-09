@@ -102,31 +102,15 @@ const PomodoroButton = styled.button`
 const Today = ({
   deleteTask,
   onChange,
-  setToday,
+  duplicateTask,
   submitTask,
   today,
-  tomorrow,
   newTask,
 }) => {
   const [timer, setTimer] = useState(25000 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef(null);
-
-  const duplicateTask = (taskId) => {
-    const duplicatedTask = {
-      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
-      name: today.find((task) => task.id === taskId).name,
-      created: Date.now(),
-    };
-    const newToday = [...today, duplicatedTask];
-    const lifelist = {
-      today: newToday,
-      tomorrow,
-    };
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setToday(newToday);
-  };
 
   const formatTime = (timer) => {
     const min = Math.floor((timer / 1000 / 60) << 0);
@@ -169,18 +153,18 @@ const Today = ({
           {task.name} {formatTime(timer)}
         </p>
         <div css="float:right; margin-right: 5px;">
-          <PomodoroButton
+          {/* <PomodoroButton
             title="Click to start pomodoro clock for this task"
             alt="start pomodoro for this task"
             onClick={startPomodoro}
           >
-            &#127813;
-            {/* <Pomodoro
-              src="Tomato.svg"
-              alt="start pomodoro for this task"
-              title="Click to start pomodoro clock for this task"
-            /> */}
-          </PomodoroButton>
+            &#127813; */}
+          <Pomodoro
+            src="Tomato.svg"
+            alt="start pomodoro for this task"
+            title="Click to start pomodoro clock for this task"
+          />
+          {/* </PomodoroButton> */}
           <ActionMenuButton
             data-tip="actions"
             data-event="click"
@@ -213,7 +197,11 @@ const Today = ({
       <TodayHeader>
         <h2 css=" padding: 10px 0; margin:0; text-align:center;">Today</h2>
       </TodayHeader>
-      <form type="submit" onSubmit={(e) => submitTask(e)}>
+      <form
+        type="submit"
+        onSubmit={(e) => submitTask(e, 'today')}
+        for="start-typing-tomorrow"
+      >
         <StartTypingBox
           type="text"
           placeholder="Start typing..."
@@ -221,6 +209,7 @@ const Today = ({
           value={newTask}
           onChange={onChange}
           spellCheck
+          id="start-typing-tomorrow"
         />
       </form>
       {todayItems}

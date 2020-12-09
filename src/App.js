@@ -14,7 +14,8 @@ const BoxContainer = styled.div`
 const App = () => {
   document.title = 'Lifelist';
   const storage = localStorage.getItem('lifelist');
-  const [newTask, setNewTask] = useState('');
+  const [newTaskToday, setNewTaskToday] = useState('');
+  const [newTaskTomorrow, setNewTaskTomorrow] = useState('');
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
 
@@ -34,25 +35,54 @@ const App = () => {
     setToday(newToday);
   };
 
-  const submitTask = (e) => {
+  const duplicateTask = (taskId) => {
+    const duplicatedTask = {
+      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
+      name: today.find((task) => task.id === taskId).name,
+      created: Date.now(),
+    };
+    const newToday = [...today, duplicatedTask];
+    const lifelist = {
+      today: newToday,
+      tomorrow,
+    };
+    localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setToday(newToday);
+  };
+
+  const submitTask = (e, day) => {
     e.preventDefault();
     const newTaskObj = {
       id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
+    newTaskObj.id =
+      day === 'today'
+        ? (today.length > 0 && today[today.length - 1].id + 1) || 1
+        : (tomorrow.length > 0 && tomorrow[tomorrow.length - 1].id + 1) || 1;
 
-    const lifelist = {
-      today: [...today, newTaskObj],
-      tomorrow: [...tomorrow],
-    };
-    setToday(lifelist.today);
+    const lifelist = {};
+    if (day === 'today') {
+      lifelist.today = [...today, newTaskObj];
+      lifelist.tomorrow = [...tomorrow];
+      setToday(lifelist.today);
+    } else {
+      lifelist.today = [...today];
+      lifelist.tomorrow = [...tomorrow, newTaskObj];
+      setTomorrow(lifelist.tomorrow);
+    }
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setNewTask('');
+    setNewTaskToday('');
+    setNewTaskTomorrow('');
   };
 
-  const onChange = (e) => {
-    setNewTask(e.target.value);
+  const onChangeToday = (e) => {
+    setNewTaskToday(e.target.value);
+  };
+
+  const onChangeTomorrow = (e) => {
+    setNewTaskTomorrow(e.target.value);
   };
 
   useEffect(() => {
@@ -77,13 +107,19 @@ const App = () => {
         <Today
           submitTask={submitTask}
           today={today}
-          tomorrow={tomorrow}
-          onChange={onChange}
-          setToday={setToday}
-          newTask={newTask}
+          onChange={onChangeToday}
+          newTask={newTaskToday}
           deleteTask={deleteTask}
+          duplicateTask={duplicateTask}
         />
-        {/* <Tomorrow /> */}
+        <Tomorrow
+          submitTask={submitTask}
+          tomorrow={tomorrow}
+          onChange={onChangeTomorrow}
+          newTask={newTaskTomorrow}
+          deleteTask={deleteTask}
+          duplicateTask={duplicateTask}
+        />
       </BoxContainer>
     </>
   );
