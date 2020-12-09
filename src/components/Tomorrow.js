@@ -99,121 +99,20 @@ const PomodoroButton = styled.button`
   }
 `;
 
-const Today = () => {
-  const storage = localStorage.getItem('lifelist');
-  const [today, setToday] = useState([]);
-  const [tomorrow, setTomorrow] = useState([]);
-  const [newTask, setNewTask] = useState('');
-  const [timer, setTimer] = useState(25000 * 60);
-  const [isActive, setIsActive] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const countRef = useRef(null);
-
-  const submitTask = (e) => {
-    e.preventDefault();
-    const newTaskObj = {
-      id: (tomorrow.length > 0 && tomorrow[tomorrow.length - 1].id + 1) || 1,
-      name: e.target[0].value,
-      created: Date.now(),
-    };
-
-    const lifelist = {
-      today: [...today],
-      tomorrow: [...tomorrow, newTaskObj],
-    };
-    setTomorrow(lifelist.tomorrow);
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setNewTask('');
-  };
-
-  const deleteTask = (taskId) => {
-    let newTomorrow;
-    tomorrow.forEach((task, index) => {
-      if (task.id === taskId) {
-        newTomorrow = [
-          ...tomorrow.splice(0, index),
-          ...tomorrow.splice(index + 1),
-        ];
-      }
-    });
-    const lifelist = {
-      today,
-      tomorrow: newTomorrow,
-    };
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setTomorrow(newTomorrow);
-  };
-
-  const duplicateTask = (taskId) => {
-    const duplicatedTask = {
-      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
-      name: today.find((task) => task.id === taskId).name,
-      created: Date.now(),
-    };
-    const newToday = [...today, duplicatedTask];
-    const lifelist = {
-      today: newToday,
-      tomorrow,
-    };
-    localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    setToday(newToday);
-  };
-
-  const formatTime = (timer) => {
-    const min = Math.floor((timer / 1000 / 60) << 0);
-    const sec =
-      Math.floor((timer / 1000) % 60) < 10
-        ? `0${Math.floor((timer / 1000) % 60)}`
-        : Math.floor((timer / 1000) % 60);
-
-    return `${min} : ${sec}`;
-  };
-
-  const startPomodoro = () => {
-    if (isActive) handlePause();
-    else if (isPaused) handleResume();
-    else {
-      setIsActive(true);
-      countRef.current = setInterval(() => {
-        setTimer((timer) => timer - 1000);
-      }, 1000);
-    }
-  };
-
-  const handlePause = () => {
-    clearInterval(countRef.current);
-    setIsPaused(true);
-    setIsActive(false);
-  };
-
-  const handleResume = () => {
-    setIsActive(true);
-    setIsPaused(false);
-    countRef.current = setInterval(() => {
-      setTimer((timer) => timer - 1);
-    }, 1000);
-  };
-
+const Tomorrow = ({
+  deleteTask,
+  onChange,
+  duplicateTask,
+  submitTask,
+  tomorrow,
+  newTask,
+}) => {
   const tomorrowItems = tomorrow
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">
-          {task.name} {formatTime(timer)}
-        </p>
+        <p css="display:inline;">{task.name}</p>
         <div css="float:right; margin-right: 5px;">
-          <PomodoroButton
-            title="Click to start pomodoro clock for this task"
-            alt="start pomodoro for this task"
-            onClick={startPomodoro}
-          >
-            &#127813;
-            {/* <Pomodoro
-              src="Tomato.svg"
-              alt="start pomodoro for this task"
-              title="Click to start pomodoro clock for this task"
-            /> */}
-          </PomodoroButton>
           <ActionMenuButton
             data-tip="actions"
             data-event="click"
@@ -232,7 +131,7 @@ const Today = () => {
             <ButtonItem onClick={() => duplicateTask(task.id)}>
               Duplicate
             </ButtonItem>
-            <ButtonItem>Move to Tomorrow</ButtonItem>
+            <ButtonItem>Move to Today</ButtonItem>
             <ButtonItem>Add Tags</ButtonItem>
             <ButtonItem isLast>Make Recurring</ButtonItem>
           </StyledToolTip>
@@ -241,32 +140,16 @@ const Today = () => {
     ))
     .reverse();
 
-  const onChange = (e) => {
-    setNewTask(e.target.value);
-  };
-
-  useEffect(() => {
-    const parsedStorage = JSON.parse(storage);
-    const lifelist = {
-      today: [],
-      tomorrow: [],
-      completed: [],
-    };
-    if (!storage) {
-      localStorage.setItem('lifelist', JSON.stringify(lifelist));
-    } else {
-      // this should probably happen outside of useEffect
-      setToday(parsedStorage.today);
-      setTomorrow(parsedStorage.tomorrow);
-    }
-  }, [storage]);
-
   return (
     <TodayBox>
       <TodayHeader>
         <h2 css=" padding: 10px 0; margin:0; text-align:center;">Tomorrow</h2>
       </TodayHeader>
-      <form type="submit" onSubmit={(e) => submitTask(e)}>
+      <form
+        type="submit"
+        onSubmit={(e) => submitTask(e, 'tomorrow')}
+        for="start-typing-tomorrow"
+      >
         <StartTypingBox
           type="text"
           placeholder="Start typing..."
@@ -274,6 +157,7 @@ const Today = () => {
           value={newTask}
           onChange={onChange}
           spellCheck
+          id="start-typing-tomorrow"
         />
       </form>
       {tomorrowItems}
@@ -281,4 +165,4 @@ const Today = () => {
   );
 };
 
-export default Today;
+export default Tomorrow;
