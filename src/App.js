@@ -91,6 +91,7 @@ const App = () => {
     setNewTaskTomorrow('');
   };
 
+  // TODO: consolidate these into one
   const onChangeToday = (e) => {
     setNewTaskToday(e.target.value);
   };

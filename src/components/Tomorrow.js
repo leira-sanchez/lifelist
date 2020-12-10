@@ -148,7 +148,7 @@ const Tomorrow = ({
       <form
         type="submit"
         onSubmit={(e) => submitTask(e, 'tomorrow')}
-        for="start-typing-tomorrow"
+        htmlFor="start-typing-tomorrow"
       >
         <StartTypingBox
           type="text"

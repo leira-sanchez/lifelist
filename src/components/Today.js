@@ -86,19 +86,6 @@ const Pomodoro = styled.img`
   }
 `;
 
-const PomodoroButton = styled.button`
-  background-color: white;
-  border: none;
-  outline: none;
-  margin-right: 5px;
-  font-size: 2em;
-
-  :hover {
-    background-color: lightgray;
-    border-radius: 50%;
-  }
-`;
-
 const Today = ({
   deleteTask,
   onChange,
@@ -141,7 +128,7 @@ const Today = ({
     setIsActive(true);
     setIsPaused(false);
     countRef.current = setInterval(() => {
-      setTimer((timer) => timer - 1);
+      setTimer((timer) => timer - 1000);
     }, 1000);
   };
 
@@ -153,18 +140,12 @@ const Today = ({
           {task.name} {formatTime(timer)}
         </p>
         <div css="float:right; margin-right: 5px;">
-          {/* <PomodoroButton
-            title="Click to start pomodoro clock for this task"
-            alt="start pomodoro for this task"
-            onClick={startPomodoro}
-          >
-            &#127813; */}
           <Pomodoro
+            onClick={startPomodoro}
             src="Tomato.svg"
             alt="start pomodoro for this task"
             title="Click to start pomodoro clock for this task"
           />
-          {/* </PomodoroButton> */}
           <ActionMenuButton
             data-tip="actions"
             data-event="click"
@@ -200,7 +181,7 @@ const Today = ({
       <form
         type="submit"
         onSubmit={(e) => submitTask(e, 'today')}
-        for="start-typing-tomorrow"
+        htmlFor="start-typing-today"
       >
         <StartTypingBox
           type="text"
@@ -209,7 +190,7 @@ const Today = ({
           value={newTask}
           onChange={onChange}
           spellCheck
-          id="start-typing-tomorrow"
+          id="start-typing-today"
         />
       </form>
       {todayItems}
