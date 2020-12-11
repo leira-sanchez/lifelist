@@ -31,15 +31,13 @@ const App = () => {
         }
       });
       lifelist.today = newToday;
-      lifelist.tomorrow = tomorrow;
+      lifelist.tomorrow = [...tomorrow];
       setToday(newToday);
     } else {
       tomorrow.forEach((task, index) => {
         if (task.id === taskId) {
-          newTomorrow = [
-            ...tomorrow.slice(0, index),
-            ...tomorrow.slice(index + 1),
-          ];
+          newTomorrow =
+            [...tomorrow.slice(0, index), ...tomorrow.slice(index + 1)] || [];
         }
       });
       lifelist.today = today;
@@ -111,6 +109,12 @@ const App = () => {
       localStorage.setItem('lifelist', JSON.stringify(lifelist));
     } else {
       // this should probably happen outside of useEffect
+      const newToday = [...lifelist.today, ...lifelist.tomorrow].filter(
+        (task) =>
+          task.created.getTime().setHours(0, 0, 0, 0) <
+          new Date().getTime.setHours()
+      );
+      console.log({ newToday });
       setToday(parsedStorage.today);
       setTomorrow(parsedStorage.tomorrow);
     }

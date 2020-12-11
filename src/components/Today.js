@@ -97,6 +97,7 @@ const Today = ({
   const [timer, setTimer] = useState(25000 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [activePomodoroId, setActivePomodoroId] = useState('');
   const countRef = useRef(null);
 
   const formatTime = (timer) => {
@@ -107,7 +108,8 @@ const Today = ({
     return `${min}:${sec}`;
   };
 
-  const startPomodoro = () => {
+  const startPomodoro = (id) => {
+    setActivePomodoroId(id);
     if (isActive) handlePause();
     else if (isPaused) handleResume();
     else {
@@ -137,11 +139,11 @@ const Today = ({
       <TaskItem key={index} idx={index}>
         <Checkbox type="checkbox" css="display:inline;" />
         <p css="display:inline;">
-          {task.name} {formatTime(timer)}
+          {task.name} {activePomodoroId === task.id ? formatTime(timer) : ''}
         </p>
         <div css="float:right; margin-right: 5px;">
           <Pomodoro
-            onClick={startPomodoro}
+            onClick={() => startPomodoro(task.id)}
             src="Tomato.svg"
             alt="start pomodoro for this task"
             title="Click to start pomodoro clock for this task"
