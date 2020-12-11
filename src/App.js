@@ -115,8 +115,11 @@ const App = () => {
           (task) => task.created <= new Date().setHours(0, 0, 0, 0)
         )
       );
+      const newTomorrow = tomorrow.filter(
+        (task) => task.created > new Date().setHours(0, 0, 0, 0)
+      );
       setToday(today);
-      setTomorrow(tomorrow);
+      setTomorrow(newTomorrow);
     }
   }, [storage]);
   return (
