@@ -109,14 +109,14 @@ const App = () => {
       localStorage.setItem('lifelist', JSON.stringify(lifelist));
     } else {
       // this should probably happen outside of useEffect
-      const newToday = [...lifelist.today, ...lifelist.tomorrow].filter(
-        (task) =>
-          task.created.getTime().setHours(0, 0, 0, 0) <
-          new Date().getTime.setHours()
+      const { today, tomorrow } = parsedStorage;
+      today.push(
+        ...[...tomorrow].filter(
+          (task) => task.created <= new Date().setHours(0, 0, 0, 0)
+        )
       );
-      console.log({ newToday });
-      setToday(parsedStorage.today);
-      setTomorrow(parsedStorage.tomorrow);
+      setToday(today);
+      setTomorrow(tomorrow);
     }
   }, [storage]);
   return (
