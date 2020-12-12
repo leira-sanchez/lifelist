@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -10,6 +10,7 @@ const ActionMenuButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
+  padding: 10px;
 
   :hover {
     background-color: lightgray;
@@ -47,6 +48,8 @@ const StartTypingBox = styled.input`
 `;
 
 const TaskItem = styled.div`
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   padding: 10px 0;
   border-bottom: 2px solid lightgray;
@@ -137,17 +140,21 @@ const Today = ({
   const todayItems = today
     .map((task, index) => (
       <TaskItem key={index} idx={index}>
-        <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">
-          {task.name} {activePomodoroId === task.id ? formatTime(timer) : ''}
-        </p>
-        <div css="float:right; margin-right: 5px;">
-          <Pomodoro
-            onClick={() => startPomodoro(task.id)}
-            src="Tomato.svg"
-            alt="start pomodoro for this task"
-            title="Click to start pomodoro clock for this task"
-          />
+        <div>
+          <Checkbox type="checkbox" css="display:inline;" />
+          <p css="display:inline;">{task.name}</p>
+          {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
+        </div>
+        <div>
+          <button css="border: 1px solid lightgray; border-radius: 5px; padding: 5px; margin-right:5px;">
+            <Pomodoro
+              onClick={() => startPomodoro(task.id)}
+              src="Tomato.svg"
+              alt="start pomodoro for this task"
+              title="Click to start pomodoro clock for this task"
+              role="button"
+            />
+          </button>
           <ActionMenuButton
             data-tip="actions"
             data-event="click"
