@@ -65,12 +65,11 @@ const App = () => {
   const submitTask = (e, day) => {
     e.preventDefault();
     const newTaskObj = {
-      // id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
 
-    // TODO: refacto this
+    // TODO: refactor this
     const test = [...today, ...tomorrow].sort((a, z) => a.id - z.id);
     newTaskObj.id = (test.length > 0 && test[test.length - 1].id + 1) || 1;
 

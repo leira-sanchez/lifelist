@@ -10,7 +10,7 @@ const ActionMenuButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 10px;
+  padding: 0 10px;
 
   :hover {
     background-color: lightgray;
@@ -37,9 +37,9 @@ const StartTypingBox = styled.input`
   padding: 20px 0;
   padding-left: 20px;
   border-top: none;
-  border-bottom: 2px solid lightgray;
-  border-left: 2px solid lightgray;
-  border-right: 2px solid lightgray;
+  border-bottom: 2px solid #1b4965;
+  border-left: 2px solid #1b4965;
+  border-right: 2px solid #1b4965;
   font-size: 1.2em;
 
   ::placeholder {
@@ -48,14 +48,15 @@ const StartTypingBox = styled.input`
 `;
 
 const TaskItem = styled.div`
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 10px 0;
-  border-bottom: 2px solid lightgray;
-  border-left: 2px solid lightgray;
-  border-right: 2px solid lightgray;
+  border-bottom: 2px solid #1b4965;
+  border-left: 2px solid #1b4965;
+  border-right: 2px solid #1b4965;
   border-radius: ${({ idx }) => {
     return idx === 0 ? '0 0 5px 5px' : 'none';
   }};
@@ -85,8 +86,15 @@ const StyledToolTip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-const Pomodoro = styled.img`
+const PomodoroButton = styled.button`
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+
   :hover {
+    background-color: lightgray;
   }
 `;
 
@@ -147,15 +155,15 @@ const Today = ({
           {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
         </div>
         <div>
-          <button css="border: 1px solid lightgray; border-radius: 5px; padding: 5px; margin-right:5px;">
-            <Pomodoro
+          <PomodoroButton>
+            <img
               onClick={() => startPomodoro(task.id)}
               src="Tomato.svg"
               alt="start pomodoro for this task"
               title="Click to start pomodoro clock for this task"
               role="button"
             />
-          </button>
+          </PomodoroButton>
           <ActionMenuButton
             data-tip="actions"
             data-event="click"

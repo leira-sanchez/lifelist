@@ -11,7 +11,7 @@ const ActionMenuButton = styled.button`
   cursor: pointer;
 
   :hover {
-    background-color: lightgray;
+    background-color: #1b4965;
     border-radius: 5px;
   }
 `;
@@ -35,9 +35,9 @@ const StartTypingBox = styled.input`
   padding: 20px 0;
   padding-left: 20px;
   border-top: none;
-  border-bottom: 2px solid lightgray;
-  border-left: 2px solid lightgray;
-  border-right: 2px solid lightgray;
+  border-bottom: 2px solid #1b4965;
+  border-left: 2px solid #1b4965;
+  border-right: 2px solid #1b4965;
   font-size: 1.2em;
   border-radius: ${({ tomorrow }) => {
     return tomorrow.length < 1 ? '0 0 5px 5px' : 'none';
@@ -49,11 +49,12 @@ const StartTypingBox = styled.input`
 `;
 
 const TaskItem = styled.div`
+  background-color: white;
   width: 100%;
   padding: 10px 0;
-  border-bottom: 2px solid lightgray;
-  border-left: 2px solid lightgray;
-  border-right: 2px solid lightgray;
+  border-bottom: 2px solid #1b4965;
+  border-left: 2px solid #1b4965;
+  border-right: 2px solid #1b4965;
   border-radius: ${({ idx }) => {
     return idx === 0 ? '0 0 5px 5px' : 'none';
   }};
