@@ -23,10 +23,9 @@ const TodayBox = styled.div`
 `;
 
 const TodayHeader = styled.div`
-  width: 100%;
+  width: calc(100% + 4px);
+  border-top: 5px solid #5fa8d3;
   background-color: #1b4965;
-  border-left: 2px solid #1b4965;
-  border-right: 2px solid #1b4965;
   color: white;
 `;
 
