@@ -50,6 +50,7 @@ const StartTypingBox = styled.input`
 const TaskItem = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 10px 0;
   border-bottom: 2px solid lightgray;
@@ -197,7 +198,7 @@ const Today = ({
           placeholder="Start typing..."
           autoFocus
           value={newTask}
-          onChange={onChange}
+          onChange={(e) => onChange(e, 'today')}
           spellCheck
           id="start-typing-today"
         />

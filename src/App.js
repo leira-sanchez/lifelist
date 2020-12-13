@@ -65,14 +65,14 @@ const App = () => {
   const submitTask = (e, day) => {
     e.preventDefault();
     const newTaskObj = {
-      id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
+      // id: (today.length > 0 && today[today.length - 1].id + 1) || 1,
       name: e.target[0].value,
       created: Date.now(),
     };
-    newTaskObj.id =
-      day === 'today'
-        ? (today.length > 0 && today[today.length - 1].id + 1) || 1
-        : (tomorrow.length > 0 && tomorrow[tomorrow.length - 1].id + 1) || 1;
+
+    // TODO: refacto this
+    const test = [...today, ...tomorrow].sort((a, z) => a.id - z.id);
+    newTaskObj.id = (test.length > 0 && test[test.length - 1].id + 1) || 1;
 
     const lifelist = {};
     if (day === 'today') {
@@ -89,13 +89,9 @@ const App = () => {
     setNewTaskTomorrow('');
   };
 
-  // TODO: consolidate these into one
-  const onChangeToday = (e) => {
-    setNewTaskToday(e.target.value);
-  };
-
-  const onChangeTomorrow = (e) => {
-    setNewTaskTomorrow(e.target.value);
+  const onChange = (e, day) => {
+    if (day === 'today') setNewTaskToday(e.target.value);
+    else setNewTaskTomorrow(e.target.value);
   };
 
   useEffect(() => {
@@ -129,7 +125,7 @@ const App = () => {
         <Today
           submitTask={submitTask}
           today={today}
-          onChange={onChangeToday}
+          onChange={onChange}
           newTask={newTaskToday}
           deleteTask={deleteTask}
           duplicateTask={duplicateTask}
@@ -137,7 +133,7 @@ const App = () => {
         <Tomorrow
           submitTask={submitTask}
           tomorrow={tomorrow}
-          onChange={onChangeTomorrow}
+          onChange={onChange}
           newTask={newTaskTomorrow}
           deleteTask={deleteTask}
           duplicateTask={duplicateTask}

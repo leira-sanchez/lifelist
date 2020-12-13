@@ -1,4 +1,3 @@
-import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -40,6 +39,9 @@ const StartTypingBox = styled.input`
   border-left: 2px solid lightgray;
   border-right: 2px solid lightgray;
   font-size: 1.2em;
+  border-radius: ${({ tomorrow }) => {
+    return tomorrow.length < 1 ? '0 0 5px 5px' : 'none';
+  }};
 
   ::placeholder {
     padding-left: 20px;
@@ -79,24 +81,6 @@ const StyledToolTip = styled(ReactTooltip)`
   opacity: 1 !important;
   cursor: pointer;
   pointer-events: auto !important;
-`;
-
-const Pomodoro = styled.img`
-  :hover {
-  }
-`;
-
-const PomodoroButton = styled.button`
-  background-color: white;
-  border: none;
-  outline: none;
-  margin-right: 5px;
-  font-size: 2em;
-
-  :hover {
-    background-color: lightgray;
-    border-radius: 50%;
-  }
 `;
 
 const Tomorrow = ({
@@ -151,13 +135,14 @@ const Tomorrow = ({
         htmlFor="start-typing-tomorrow"
       >
         <StartTypingBox
-          type="text"
-          placeholder="Start typing..."
           autoFocus
-          value={newTask}
-          onChange={onChange}
-          spellCheck
           id="start-typing-tomorrow"
+          onChange={onChange}
+          placeholder="Start typing..."
+          spellCheck
+          tomorrow={tomorrow}
+          type="text"
+          value={newTask}
         />
       </form>
       {tomorrowItems}
