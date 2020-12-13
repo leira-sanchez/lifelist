@@ -9,6 +9,8 @@ const ActionMenuButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
+  padding: 0 10px;
+  margin-right: 5px;
 
   :hover {
     background-color: #1b4965;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -118,7 +119,7 @@ const App = () => {
     }
   }, [storage]);
   return (
-    <>
+    <Router>
       <Navbar />
       <BoxContainer>
         <Today
@@ -138,7 +139,7 @@ const App = () => {
           duplicateTask={duplicateTask}
         />
       </BoxContainer>
-    </>
+    </Router>
   );
 };
 

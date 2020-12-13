@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Header = styled.header`
@@ -19,10 +20,16 @@ const NavItem = styled.li`
 
 const Navbar = () => (
   <Header>
-    <h1>Lifelist</h1>
+    <h1>
+      <NavLink to={'/'}>Lifelist </NavLink>
+    </h1>
     <nav>
-      <NavItem>Home</NavItem>
-      <NavItem>Archive</NavItem>
+      <NavItem>
+        <NavLink to={'/'}>Home</NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink to={'/archive'}>Archive</NavLink>
+      </NavItem>
     </nav>
   </Header>
 );
