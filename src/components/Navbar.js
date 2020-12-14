@@ -10,25 +10,39 @@ const Header = styled.header`
   justify-content: space-around;
   align-items: center;
   position: sticky;
+  top: 0;
+  width: 100%;
 `;
 
 const NavItem = styled.li`
   list-style: none;
   display: inline;
-  margin-left: 10px;
+  /* margin-left: 10px; */
+  padding: 10px;
+
+  :hover {
+    background-color: ${({ isHeader }) => {
+      return isHeader ? '' : '#1b4965';
+    }};
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  color: white;
+  text-decoration: none;
 `;
 
 const Navbar = () => (
   <Header>
     <h1>
-      <NavLink to={'/'}>Lifelist </NavLink>
+      <StyledNavLink to={'/'}>Lifelist </StyledNavLink>
     </h1>
     <nav>
       <NavItem>
-        <NavLink to={'/'}>Home</NavLink>
+        <StyledNavLink to={'/'}>Home</StyledNavLink>
       </NavItem>
       <NavItem>
-        <NavLink to={'/archive'}>Archive</NavLink>
+        <StyledNavLink to={'/archive'}>Archive</StyledNavLink>
       </NavItem>
     </nav>
   </Header>

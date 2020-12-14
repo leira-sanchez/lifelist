@@ -65,6 +65,7 @@ const App = () => {
 
   const submitTask = (e, day) => {
     e.preventDefault();
+    if (e.target[0].value === '') return;
     const newTaskObj = {
       name: e.target[0].value,
       created: Date.now(),

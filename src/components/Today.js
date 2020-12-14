@@ -41,6 +41,9 @@ const StartTypingBox = styled.input`
   border-left: 2px solid #1b4965;
   border-right: 2px solid #1b4965;
   font-size: 1.2em;
+  border-radius: ${({ today }) => {
+    return today.length < 1 ? '0 0 5px 5px' : 'none';
+  }};
 
   ::placeholder {
     padding-left: 20px;
@@ -147,48 +150,52 @@ const Today = ({
   };
 
   const todayItems = today
-    .map((task, index) => (
-      <TaskItem key={index} idx={index}>
-        <div>
-          <Checkbox type="checkbox" css="display:inline;" />
-          <p css="display:inline;">{task.name}</p>
-          {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
-        </div>
-        <div>
-          <PomodoroButton>
-            <img
-              onClick={() => startPomodoro(task.id)}
-              src="Tomato.svg"
-              alt="start pomodoro for this task"
-              title="Click to start pomodoro clock for this task"
-              role="button"
-            />
-          </PomodoroButton>
-          <ActionMenuButton
-            data-tip="actions"
-            data-event="click"
-            data-for={`tooltip-${task.id}`}
-          >
-            &#8942;
-          </ActionMenuButton>
-          <StyledToolTip
-            backgroundColor={'#393939'}
-            globalEventOff="click"
-            effect="solid"
-            place="left"
-            id={`tooltip-${task.id}`}
-          >
-            <ButtonItem onClick={() => deleteTask(task.id)}>Delete</ButtonItem>
-            <ButtonItem onClick={() => duplicateTask(task.id)}>
-              Duplicate
-            </ButtonItem>
-            <ButtonItem>Move to Tomorrow</ButtonItem>
-            <ButtonItem>Add Tags</ButtonItem>
-            <ButtonItem isLast>Make Recurring</ButtonItem>
-          </StyledToolTip>
-        </div>
-      </TaskItem>
-    ))
+    .map((task, index) =>
+      task ? (
+        <TaskItem key={index} idx={index}>
+          <div>
+            <Checkbox type="checkbox" css="display:inline;" />
+            <p css="display:inline;">{task.name}</p>
+            {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
+          </div>
+          <div>
+            <PomodoroButton>
+              <img
+                onClick={() => startPomodoro(task.id)}
+                src="Tomato.svg"
+                alt="start pomodoro for this task"
+                title="Click to start pomodoro clock for this task"
+                role="button"
+              />
+            </PomodoroButton>
+            <ActionMenuButton
+              data-tip="actions"
+              data-event="click"
+              data-for={`tooltip-${task.id}`}
+            >
+              &#8942;
+            </ActionMenuButton>
+            <StyledToolTip
+              backgroundColor={'#393939'}
+              globalEventOff="click"
+              effect="solid"
+              place="left"
+              id={`tooltip-${task.id}`}
+            >
+              <ButtonItem onClick={() => deleteTask(task.id, 'today')}>
+                Delete
+              </ButtonItem>
+              <ButtonItem onClick={() => duplicateTask(task.id)}>
+                Duplicate
+              </ButtonItem>
+              <ButtonItem>Move to Tomorrow</ButtonItem>
+              <ButtonItem>Add Tags</ButtonItem>
+              <ButtonItem isLast>Make Recurring</ButtonItem>
+            </StyledToolTip>
+          </div>
+        </TaskItem>
+      ) : null
+    )
     .reverse();
 
   return (
@@ -209,6 +216,7 @@ const Today = ({
           onChange={(e) => onChange(e, 'today')}
           spellCheck
           id="start-typing-today"
+          today={today}
         />
       </form>
       {todayItems}

@@ -87,44 +87,50 @@ const StyledToolTip = styled(ReactTooltip)`
 
 const Tomorrow = ({
   deleteTask,
-  onChange,
   duplicateTask,
+  newTask,
+  onChange,
   submitTask,
   tomorrow,
-  newTask,
 }) => {
-  const tomorrowItems = tomorrow
-    .map((task, index) => (
-      <TaskItem key={index} idx={index}>
-        <Checkbox type="checkbox" css="display:inline;" />
-        <p css="display:inline;">{task.name}</p>
-        <div css="float:right; margin-right: 5px;">
-          <ActionMenuButton
-            data-tip="actions"
-            data-event="click"
-            data-for={`tooltip-${task.id}`}
-          >
-            &#8942;
-          </ActionMenuButton>
-          <StyledToolTip
-            backgroundColor={'#393939'}
-            globalEventOff="click"
-            effect="solid"
-            place="left"
-            id={`tooltip-${task.id}`}
-          >
-            <ButtonItem onClick={() => deleteTask(task.id)}>Delete</ButtonItem>
-            <ButtonItem onClick={() => duplicateTask(task.id)}>
-              Duplicate
-            </ButtonItem>
-            <ButtonItem>Move to Today</ButtonItem>
-            <ButtonItem>Add Tags</ButtonItem>
-            <ButtonItem isLast>Make Recurring</ButtonItem>
-          </StyledToolTip>
-        </div>
-      </TaskItem>
-    ))
-    .reverse();
+  const tomorrowItems =
+    tomorrow &&
+    tomorrow
+      .map((task, index) =>
+        tomorrow ? (
+          <TaskItem key={index} idx={index}>
+            <Checkbox type="checkbox" css="display:inline;" />
+            <p css="display:inline;">{task.name}</p>
+            <div css="float:right; margin-right: 5px;">
+              <ActionMenuButton
+                data-tip="actions"
+                data-event="click"
+                data-for={`tooltip-${task.id}`}
+              >
+                &#8942;
+              </ActionMenuButton>
+              <StyledToolTip
+                backgroundColor={'#393939'}
+                globalEventOff="click"
+                effect="solid"
+                place="left"
+                id={`tooltip-${task.id}`}
+              >
+                <ButtonItem onClick={() => deleteTask(task.id, 'tomorrow')}>
+                  Delete
+                </ButtonItem>
+                <ButtonItem onClick={() => duplicateTask(task.id)}>
+                  Duplicate
+                </ButtonItem>
+                <ButtonItem>Move to Today</ButtonItem>
+                <ButtonItem>Add Tags</ButtonItem>
+                <ButtonItem isLast>Make Recurring</ButtonItem>
+              </StyledToolTip>
+            </div>
+          </TaskItem>
+        ) : null
+      )
+      .reverse();
 
   return (
     <TodayBox>
