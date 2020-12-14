@@ -17,10 +17,11 @@ const Header = styled.header`
 const NavItem = styled.li`
   list-style: none;
   display: inline;
-  /* margin-left: 10px; */
   padding: 10px;
+  cursor: pointer;
 
   :hover {
+    padding-bottom: 35px;
     background-color: ${({ isHeader }) => {
       return isHeader ? '' : '#1b4965';
     }};
