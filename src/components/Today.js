@@ -106,12 +106,14 @@ const Today = ({
   duplicateTask,
   submitTask,
   today,
+  completed,
   newTask,
 }) => {
   const [timer, setTimer] = useState(25000 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [activePomodoroId, setActivePomodoroId] = useState('');
+  const [checkedId, setCheckedId] = useState('');
   const countRef = useRef(null);
 
   const formatTime = (timer) => {
@@ -153,7 +155,12 @@ const Today = ({
       task ? (
         <TaskItem key={index} idx={index}>
           <div>
-            <Checkbox type="checkbox" css="display:inline;" />
+            <Checkbox
+              type="checkbox"
+              css="display:inline;"
+              checked={completed.includes(task.id)}
+              onChange={() => (checkedId === '' ? setCheckedId(task.id) : '')}
+            />
             <p css="display:inline;">{task.name}</p>
             {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
           </div>

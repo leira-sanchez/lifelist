@@ -19,6 +19,7 @@ const App = () => {
   const [newTaskTomorrow, setNewTaskTomorrow] = useState('');
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
+  const [completed, setCompleted] = useState([]);
 
   const deleteTask = (taskId, day) => {
     console.log({ taskId });
@@ -130,6 +131,7 @@ const App = () => {
           newTask={newTaskToday}
           deleteTask={deleteTask}
           duplicateTask={duplicateTask}
+          completed={completed}
         />
         <Tomorrow
           submitTask={submitTask}
