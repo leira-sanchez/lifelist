@@ -8,7 +8,6 @@ const ActionMenuButton = styled.button`
   font-size: 2em;
   background-color: white;
   border: none;
-  outline: none;
   cursor: pointer;
   padding: 0 10px;
   margin-right: 5px;
@@ -32,10 +31,10 @@ const TodayHeader = styled.div`
 
 const StartTypingBox = styled.input`
   width: 100%;
-  width: calc(100% - 20px);
+  width: calc(100% - 40px);
   outline: none;
   padding: 20px 0;
-  padding-left: 20px;
+  padding-left: 40px;
   border-top: none;
   border-bottom: 2px solid #1b4965;
   border-left: 2px solid #1b4965;
@@ -46,7 +45,7 @@ const StartTypingBox = styled.input`
   }};
 
   ::placeholder {
-    padding-left: 20px;
+    /* padding-left: 20px; */
   }
 `;
 

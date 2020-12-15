@@ -1,19 +1,17 @@
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
-import Checkbox from '@material-ui/core/Checkbox';
 
 const ActionMenuButton = styled.button`
   font-weight: bold;
   font-size: 2em;
   background-color: white;
   border: none;
-  outline: none;
   cursor: pointer;
   padding: 0 10px;
   margin-right: 5px;
 
   :hover {
-    background-color: #1b4965;
+    background-color: lightgray;
     border-radius: 5px;
   }
 `;
@@ -43,22 +41,21 @@ const StartTypingBox = styled.input`
   border-radius: ${({ tomorrow }) => {
     return tomorrow.length < 1 ? '0 0 5px 5px' : 'none';
   }};
-
-  ::placeholder {
-    padding-left: 20px;
-  }
 `;
 
 const TaskItem = styled.div`
   background-color: white;
   width: 100%;
-  padding: 10px 0;
+  padding: 3.3px 0;
   border-bottom: 2px solid #1b4965;
   border-left: 2px solid #1b4965;
   border-right: 2px solid #1b4965;
   border-radius: ${({ idx }) => {
     return idx === 0 ? '0 0 5px 5px' : 'none';
   }};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ButtonItem = styled.button`
@@ -99,8 +96,7 @@ const Tomorrow = ({
       .map((task, index) =>
         tomorrow ? (
           <TaskItem key={index} idx={index}>
-            <Checkbox type="checkbox" css="display:inline;" />
-            <p css="display:inline;">{task.name}</p>
+            <p css="display:inline; margin-left: 20px;">{task.name}</p>
             <div css="float:right; margin-right: 5px;">
               <ActionMenuButton
                 data-tip="actions"
