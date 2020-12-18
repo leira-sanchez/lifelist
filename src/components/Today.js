@@ -107,6 +107,7 @@ const Today = ({
   submitTask,
   today,
   completed,
+  onCompletion,
   newTask,
 }) => {
   const [timer, setTimer] = useState(25000 * 60);
@@ -150,7 +151,7 @@ const Today = ({
     }, 1000);
   };
 
-  const todayItems = today
+  const todayItems = [...completed, ...today]
     .map((task, index) =>
       task ? (
         <TaskItem key={index} idx={index}>
@@ -158,8 +159,8 @@ const Today = ({
             <Checkbox
               type="checkbox"
               css="display:inline;"
-              checked={completed.includes(task.id)}
-              onChange={() => (checkedId === '' ? setCheckedId(task.id) : '')}
+              checked={completed.includes(task)}
+              onChange={() => onCompletion(task.id)}
             />
             <p css="display:inline;">{task.name}</p>
             {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}

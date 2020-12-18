@@ -34,6 +34,7 @@ const App = () => {
       });
       lifelist.today = newToday;
       lifelist.tomorrow = [...tomorrow];
+      lifelist.completed = [...completed];
       setToday(newToday);
     } else {
       tomorrow.forEach((task, index) => {
@@ -59,6 +60,7 @@ const App = () => {
     const lifelist = {
       today: newToday,
       tomorrow,
+      completed,
     };
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
     setToday(newToday);
@@ -80,6 +82,7 @@ const App = () => {
     if (day === 'today') {
       lifelist.today = [...today, newTaskObj];
       lifelist.tomorrow = [...tomorrow];
+      lifelist.completed = [...completed];
       setToday(lifelist.today);
     } else {
       lifelist.today = [...today];
@@ -96,6 +99,26 @@ const App = () => {
     else setNewTaskTomorrow(e.target.value);
   };
 
+  const onCompletion = (taskId) => {
+    const completedTask = today.find((task) => task.id === taskId);
+    const newCompleted = [...completed, completedTask];
+    const newToday =
+      [
+        ...today.slice(0, today.indexOf(completedTask)),
+        ...today.slice(today.indexOf(completedTask) + 1),
+      ] || [];
+
+    const lifelist = {};
+    lifelist.today = [...newToday];
+    lifelist.tomorrow = [...tomorrow];
+    lifelist.completed = [...newCompleted];
+    setCompleted(newCompleted);
+
+    localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setNewTaskToday('');
+    setNewTaskTomorrow('');
+  };
+
   useEffect(() => {
     const parsedStorage = JSON.parse(storage);
     const lifelist = {
@@ -107,7 +130,7 @@ const App = () => {
       localStorage.setItem('lifelist', JSON.stringify(lifelist));
     } else {
       // this should probably happen outside of useEffect
-      const { today, tomorrow } = parsedStorage;
+      const { today, tomorrow, completed } = parsedStorage;
       today.push(
         ...[...tomorrow].filter(
           (task) => task.created <= new Date().setHours(0, 0, 0, 0)
@@ -118,6 +141,7 @@ const App = () => {
       );
       setToday(today);
       setTomorrow(newTomorrow);
+      setCompleted(completed);
     }
   }, [storage]);
   return (
@@ -132,6 +156,7 @@ const App = () => {
           deleteTask={deleteTask}
           duplicateTask={duplicateTask}
           completed={completed}
+          onCompletion={onCompletion}
         />
         <Tomorrow
           submitTask={submitTask}
