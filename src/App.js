@@ -32,8 +32,8 @@ const App = () => {
         }
       });
       lifelist.today = newToday;
-      lifelist.tomorrow = [...tomorrow];
-      lifelist.completed = [...completed];
+      lifelist.tomorrow = tomorrow;
+      lifelist.completed = completed;
       setToday(newToday);
     } else {
       tomorrow.forEach((task, index) => {
@@ -44,6 +44,7 @@ const App = () => {
       });
       lifelist.today = today;
       lifelist.tomorrow = newTomorrow;
+      lifelist.completed = completed;
       setTomorrow(newTomorrow);
     }
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
@@ -80,13 +81,13 @@ const App = () => {
     const lifelist = {};
     if (day === 'today') {
       lifelist.today = [...today, newTaskObj];
-      lifelist.tomorrow = [...tomorrow];
-      lifelist.completed = [...completed];
+      lifelist.tomorrow = tomorrow;
+      lifelist.completed = completed;
       setToday(lifelist.today);
     } else {
-      lifelist.today = [...today];
+      lifelist.today = today;
       lifelist.tomorrow = [...tomorrow, newTaskObj];
-      lifelist.completed = [...completed];
+      lifelist.completed = completed;
       setTomorrow(lifelist.tomorrow);
     }
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
@@ -100,16 +101,12 @@ const App = () => {
   };
 
   const onCompletion = (taskId) => {
-    console.log({ taskId });
-    const completedTask = [...today, ...tomorrow, ...completed].find((task) => {
-      console.log({ task });
-      return task.id === taskId;
-    });
-    console.log({ completedTask });
+    const completedTask = [...today, ...tomorrow, ...completed].find(
+      (task) => task.id === taskId
+    );
     let newCompleted;
     let newToday;
     if (completed.includes(completedTask)) {
-      console.log('includes');
       newCompleted =
         [
           ...completed.slice(0, completed.indexOf(completedTask)),
@@ -126,12 +123,12 @@ const App = () => {
     }
 
     const lifelist = {};
-    lifelist.today = [...newToday];
-    lifelist.tomorrow = [...tomorrow];
-    lifelist.completed = [...newCompleted];
-    setCompleted(newCompleted);
+    lifelist.today = newToday;
+    lifelist.tomorrow = tomorrow;
+    lifelist.completed = newCompleted;
 
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
+    setCompleted(newCompleted);
     setNewTaskToday('');
     setNewTaskTomorrow('');
   };
