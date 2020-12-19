@@ -22,7 +22,6 @@ const App = () => {
   const [completed, setCompleted] = useState([]);
 
   const deleteTask = (taskId, day) => {
-    console.log({ taskId });
     let newToday;
     let newTomorrow;
     let lifelist = {};
@@ -87,6 +86,7 @@ const App = () => {
     } else {
       lifelist.today = [...today];
       lifelist.tomorrow = [...tomorrow, newTaskObj];
+      lifelist.completed = [...completed];
       setTomorrow(lifelist.tomorrow);
     }
     localStorage.setItem('lifelist', JSON.stringify(lifelist));
@@ -100,13 +100,30 @@ const App = () => {
   };
 
   const onCompletion = (taskId) => {
-    const completedTask = today.find((task) => task.id === taskId);
-    const newCompleted = [...completed, completedTask];
-    const newToday =
-      [
-        ...today.slice(0, today.indexOf(completedTask)),
-        ...today.slice(today.indexOf(completedTask) + 1),
-      ] || [];
+    console.log({ taskId });
+    const completedTask = [...today, ...tomorrow, ...completed].find((task) => {
+      console.log({ task });
+      return task.id === taskId;
+    });
+    console.log({ completedTask });
+    let newCompleted;
+    let newToday;
+    if (completed.includes(completedTask)) {
+      console.log('includes');
+      newCompleted =
+        [
+          ...completed.slice(0, completed.indexOf(completedTask)),
+          ...completed.slice(completed.indexOf(completedTask) + 1),
+        ] || [];
+      newToday = [...today, completedTask];
+    } else {
+      newCompleted = [...completed, completedTask];
+      newToday =
+        [
+          ...today.slice(0, today.indexOf(completedTask)),
+          ...today.slice(today.indexOf(completedTask) + 1),
+        ] || [];
+    }
 
     const lifelist = {};
     lifelist.today = [...newToday];
