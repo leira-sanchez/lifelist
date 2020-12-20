@@ -82,9 +82,10 @@ const StyledToolTip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-const Tomorrow = ({
+const Archive = ({
   deleteTask,
   duplicateTask,
+  completed,
   newTask,
   onChange,
   submitTask,
@@ -94,7 +95,7 @@ const Tomorrow = ({
     tomorrow &&
     tomorrow
       .map((task, index) =>
-        tomorrow ? (
+        completed ? (
           <TaskItem key={index} idx={index}>
             <p css="display:inline; margin-left: 20px;">{task.name}</p>
             <div css="float:right; margin-right: 5px;">
@@ -131,26 +132,11 @@ const Tomorrow = ({
   return (
     <TodayBox>
       <TodayHeader>
-        <h2 css=" padding: 10px 0; margin:0; text-align:center;">Tomorrow</h2>
+        <h2 css=" padding: 10px 0; margin:0; text-align:center;">Archive</h2>
       </TodayHeader>
-      <form
-        type="submit"
-        onSubmit={(e) => submitTask(e, 'tomorrow')}
-        htmlFor="start-typing-tomorrow"
-      >
-        <StartTypingBox
-          id="start-typing-tomorrow"
-          onChange={onChange}
-          placeholder="Start typing..."
-          spellCheck
-          tomorrow={tomorrow}
-          type="text"
-          value={newTask}
-        />
-      </form>
       {tomorrowItems}
     </TodayBox>
   );
 };
 
-export default Tomorrow;
+export default Archive;

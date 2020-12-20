@@ -106,9 +106,10 @@ const Today = ({
   duplicateTask,
   submitTask,
   today,
-  completed,
   onCompletion,
+  completed,
   newTask,
+  completedToday,
 }) => {
   const [timer, setTimer] = useState(25000 * 60);
   const [isActive, setIsActive] = useState(false);
@@ -151,7 +152,7 @@ const Today = ({
     }, 1000);
   };
 
-  const todayItems = [...completed, ...today]
+  const todayItems = [...completedToday, ...today]
     .map((task, index) =>
       task ? (
         <TaskItem key={index} idx={index}>
@@ -216,14 +217,14 @@ const Today = ({
         htmlFor="start-typing-today"
       >
         <StartTypingBox
-          type="text"
-          placeholder="Start typing..."
           autoFocus
-          value={newTask}
-          onChange={(e) => onChange(e, 'today')}
-          spellCheck
           id="start-typing-today"
+          onChange={(e) => onChange(e, 'today')}
+          placeholder="Start typing..."
+          spellCheck
           today={today}
+          type="text"
+          value={newTask}
         />
       </form>
       {todayItems}

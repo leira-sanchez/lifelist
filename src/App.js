@@ -20,6 +20,7 @@ const App = () => {
   const [today, setToday] = useState([]);
   const [tomorrow, setTomorrow] = useState([]);
   const [completed, setCompleted] = useState([]);
+  const [completedToday, setCompletedToday] = useState([]);
 
   const deleteTask = (taskId, day) => {
     let newToday;
@@ -114,6 +115,7 @@ const App = () => {
         ] || [];
       newToday = [...today, completedTask];
     } else {
+      completedTask.completedAt = Date.now();
       newCompleted = [...completed, completedTask];
       newToday =
         [
@@ -153,9 +155,14 @@ const App = () => {
       const newTomorrow = tomorrow.filter(
         (task) => task.created > new Date().setHours(0, 0, 0, 0)
       );
+
+      const completedToday = completed.filter(
+        (task) => task.completedAt >= new Date().setHours(0, 0, 0, 0)
+      );
       setToday(today);
       setTomorrow(newTomorrow);
       setCompleted(completed);
+      setCompletedToday(completedToday);
     }
   }, [storage]);
   return (
@@ -171,6 +178,7 @@ const App = () => {
           duplicateTask={duplicateTask}
           completed={completed}
           onCompletion={onCompletion}
+          completedToday={completedToday}
         />
         <Tomorrow
           submitTask={submitTask}
