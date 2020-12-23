@@ -12,12 +12,12 @@ const Home = () => (
   <BoxContainer>
     <Today />
     <Tomorrow
-    //   submitTask={submitTask}
-    //   tomorrow={tomorrow}
-    //   onChange={onChange}
-    //   newTask={newTaskTomorrow}
-    //   deleteTask={deleteTask}
-    //   duplicateTask={duplicateTask}
+      deleteTask={deleteTask}
+      duplicateTask={duplicateTask}
+      newTask={newTaskTomorrow}
+      onChange={onChange}
+      submitTask={submitTask}
+      tomorrow={tomorrow}
     />
   </BoxContainer>
 );

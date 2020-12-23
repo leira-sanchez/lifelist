@@ -2,6 +2,8 @@
 
 Lifelist is a note taking app. Note down what you have to do today and tomorrow. Whatever doesn't get done today, gets added to tomorrow's list. Integrated pomodoro.
 
+To see the project's kanban board, planned features, etc., see the [Notion Board](https://www.notion.so/leirasanchez/Lifelist-cb71cdbe7a9a4327821f9440a21948b8).
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

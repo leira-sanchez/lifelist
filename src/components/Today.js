@@ -43,10 +43,6 @@ const StartTypingBox = styled.input`
   border-radius: ${({ today }) => {
     return today.length < 1 ? '0 0 5px 5px' : 'none';
   }};
-
-  ::placeholder {
-    /* padding-left: 20px; */
-  }
 `;
 
 const TaskItem = styled.div`
