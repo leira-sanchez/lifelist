@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-// import styled from 'styled-components/macro';
 import Checkbox from '@material-ui/core/Checkbox';
 import {
   ActionMenuButton,

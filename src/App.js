@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import styled from 'styled-components';
 import './App.css';
 import Navbar from './components/Navbar';
 import Today from './components/Today';
 import Tomorrow from './components/Tomorrow';
+import { BoxContainer } from "./GlobalStyles";
 
-const BoxContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-top: 50px;
-`;
 
 const App = () => {
   document.title = 'Lifelist';
