@@ -3,17 +3,16 @@ import {
   TodayBox,
   TodayHeader,
   Heading,
-  StartTypingBox,
   TaskItem,
   ButtonItem,
   StyledToolTip,
   TaskContainer,
-  TaskParagraph
-} from './TaskStyles';
+} from '../TaskStyles';
 
-const Tomorrow = ({
+const Archive = ({
   deleteTask,
   duplicateTask,
+  completed,
   newTask,
   onChange,
   submitTask,
@@ -23,10 +22,10 @@ const Tomorrow = ({
     tomorrow &&
     tomorrow
       .map((task, index) =>
-        tomorrow ? (
+        completed ? (
           <TaskItem key={index} idx={index}>
             <TaskContainer>
-              <TaskParagraph>{task.name}</TaskParagraph>
+              <p css="display:inline; margin-left: 20px;">{task.name}</p>
             </TaskContainer>
             <div css="float:right; margin-right: 5px;">
               <ActionMenuButton
@@ -62,26 +61,11 @@ const Tomorrow = ({
   return (
     <TodayBox>
       <TodayHeader>
-        <Heading>Tomorrow</Heading>
+        <Heading>Archive</Heading>
       </TodayHeader>
-      <form
-        type="submit"
-        onSubmit={(e) => submitTask(e, 'tomorrow')}
-        htmlFor="start-typing-tomorrow"
-      >
-        <StartTypingBox
-          id="start-typing-tomorrow"
-          onChange={onChange}
-          placeholder="Start typing..."
-          spellCheck
-          day={tomorrow}
-          type="text"
-          value={newTask}
-        />
-      </form>
       {tomorrowItems}
     </TodayBox>
   );
 };
 
-export default Tomorrow;
+export default Archive;
