@@ -1,5 +1,3 @@
-// import styled from 'styled-components/macro';
-// import ReactTooltip from 'react-tooltip';
 import {
   ActionMenuButton,
   TodayBox,
@@ -9,7 +7,8 @@ import {
   TaskItem,
   ButtonItem,
   StyledToolTip,
-  TaskContainer
+  TaskContainer,
+  TaskParagraph
 } from './TaskStyles';
 
 const Tomorrow = ({
@@ -26,7 +25,9 @@ const Tomorrow = ({
       .map((task, index) =>
         tomorrow ? (
           <TaskItem key={index} idx={index}>
-            <TaskContainer><p>{task.name}</p></TaskContainer>
+            <TaskContainer>
+              <TaskParagraph>{task.name}</TaskParagraph>
+            </TaskContainer>
             <div css="float:right; margin-right: 5px;">
               <ActionMenuButton
                 data-tip="actions"

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-export const Header = styled.header`
+const Header = styled.header`
   background-color: #5fa8d3;
   color: white;
   margin: 0;
@@ -13,22 +13,24 @@ export const Header = styled.header`
   width: 100%;
 `;
 
-export const NavItem = styled.li.attrs((props) => ({
+const NavItem = styled.li.attrs((props) => ({
   isHeader: props.isHeader,
 }))`
-list-style: none;
-display: inline;
-padding: 10px;
-cursor: pointer;
+  list-style: none;
+  display: inline;
+  padding: 10px;
+  cursor: pointer;
 
-:hover {
+  :hover {
   padding-bottom: 35px;
   background-color: ${(isHeader) => {
     return isHeader ? '' : '#1b4965';
   }}
 `;
 
-export const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   color: white;
   text-decoration: none;
 `;
+
+export { Header, NavItem, StyledNavLink}

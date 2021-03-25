@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import ReactTooltip from 'react-tooltip';
 
-export const ActionMenuButton = styled.button`
+const ActionMenuButton = styled.button`
   font-weight: bold;
   font-size: 2em;
   background-color: white;
@@ -16,24 +16,24 @@ export const ActionMenuButton = styled.button`
   }
 `;
 
-export const TodayBox = styled.div`
+const TodayBox = styled.div`
   width: 40%;
 `;
 
-export const TodayHeader = styled.div`
+const TodayHeader = styled.div`
   width: calc(100% + 4px);
   border-top: 5px solid #5fa8d3;
   background-color: #1b4965;
   color: white;
 `;
 
-export const Heading = styled.h2`
+const Heading = styled.h2`
   padding: 10px 0;
   margin: 0;
   text-align: center;
 `;
 
-export const StartTypingBox = styled.input.attrs((props) => ({
+const StartTypingBox = styled.input.attrs((props) => ({
   day: props.day,
 }))`
   width: 100%;
@@ -49,7 +49,7 @@ export const StartTypingBox = styled.input.attrs((props) => ({
   border-radius: ${(props) => (props.day < 1 ? '0 0 5px 5px' : 'none')};
 `;
 
-export const TaskItem = styled.div.attrs((props) => ({ idx: props.idx }))`
+const TaskItem = styled.div.attrs((props) => ({ idx: props.idx }))`
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -63,7 +63,7 @@ export const TaskItem = styled.div.attrs((props) => ({ idx: props.idx }))`
   }};
 `;
 
-export const ButtonItem = styled.button.attrs((props) => ({
+const ButtonItem = styled.button.attrs((props) => ({
   isLast: props.isLast,
 }))`
   background-color: #393939;
@@ -82,14 +82,14 @@ export const ButtonItem = styled.button.attrs((props) => ({
   }
 `;
 
-export const StyledToolTip = styled(ReactTooltip)`
+const StyledToolTip = styled(ReactTooltip)`
   width: max-content;
   opacity: 1 !important;
   cursor: pointer;
   pointer-events: auto !important;
 `;
 
-export const PomodoroButton = styled.button`
+const PomodoroButton = styled.button`
   border: 1px solid lightgray;
   border-radius: 5px;
   padding: 5px;
@@ -101,6 +101,24 @@ export const PomodoroButton = styled.button`
   }
 `;
 
-export const TaskContainer = styled.div`
+const TaskContainer = styled.div`
   padding: 0 10px;
 `;
+
+const TaskParagraph = styled.div`
+  display: inline;
+`
+
+export {
+  ActionMenuButton,
+  ButtonItem,
+  Heading,
+  PomodoroButton,
+  StartTypingBox,
+  StyledToolTip,
+  TodayBox,
+  TaskContainer,
+  TodayHeader,
+  TaskItem,
+  TaskParagraph
+};

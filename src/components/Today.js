@@ -10,7 +10,8 @@ import {
   ButtonItem,
   StyledToolTip,
   PomodoroButton,
-  TaskContainer
+  TaskContainer,
+  TaskParagraph
 } from './TaskStyles';
 
 const Today = ({
@@ -76,7 +77,7 @@ const Today = ({
               checked={completed.includes(task)}
               onChange={() => onCompletion(task.id)}
             />
-            <p css="display:inline;">{task.name}</p>
+            <TaskParagraph>{task.name}</TaskParagraph>
             {activePomodoroId === task.id ? <i> {formatTime(timer)}</i> : null}
           </TaskContainer>
           <div>
