@@ -18,7 +18,8 @@ const App = () => {
   const [tomorrow, setTomorrow] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [completedToday, setCompletedToday] = useState([]);
-  const [isDarkMode, toggleTheme] = useThemeState(false);
+  // useThemeState defaults the state to false
+  const [isDarkMode, toggleTheme] = useThemeState('isDarkModeEnabled');
   const theme = isDarkMode ? darkTheme : lightTheme
 
   console.log(isDarkMode);
