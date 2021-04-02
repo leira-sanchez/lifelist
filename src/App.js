@@ -4,8 +4,10 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Today from './components/Today';
 import Tomorrow from './components/Tomorrow';
-import { BoxContainer } from "./GlobalStyles";
-
+import { BoxContainer } from './GStyles';
+import { useThemeState } from './customHooks/useThemeState';
+import { lightTheme, darkTheme } from './constants/themeColors';
+import { ThemeProvider } from 'styled-components';
 
 const App = () => {
   document.title = 'Lifelist';
@@ -16,7 +18,10 @@ const App = () => {
   const [tomorrow, setTomorrow] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [completedToday, setCompletedToday] = useState([]);
+  const [isDarkMode, toggleTheme] = useThemeState(false);
+  const theme = isDarkMode ? darkTheme : lightTheme
 
+  console.log(isDarkMode);
   const deleteTask = (taskId, day) => {
     let newToday;
     let newTomorrow;
@@ -160,31 +165,34 @@ const App = () => {
       setCompletedToday(completedToday);
     }
   }, [storage]);
+  
   return (
-    <Router>
-      <Navbar />
-      <BoxContainer>
-        <Today
-          submitTask={submitTask}
-          today={today}
-          onChange={onChange}
-          newTask={newTaskToday}
-          deleteTask={deleteTask}
-          duplicateTask={duplicateTask}
-          completed={completed}
-          onCompletion={onCompletion}
-          completedToday={completedToday}
-        />
-        <Tomorrow
-          submitTask={submitTask}
-          tomorrow={tomorrow}
-          onChange={onChange}
-          newTask={newTaskTomorrow}
-          deleteTask={deleteTask}
-          duplicateTask={duplicateTask}
-        />
-      </BoxContainer>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <BoxContainer>
+          <Today
+            submitTask={submitTask}
+            today={today}
+            onChange={onChange}
+            newTask={newTaskToday}
+            deleteTask={deleteTask}
+            duplicateTask={duplicateTask}
+            completed={completed}
+            onCompletion={onCompletion}
+            completedToday={completedToday}
+          />
+          <Tomorrow
+            submitTask={submitTask}
+            tomorrow={tomorrow}
+            onChange={onChange}
+            newTask={newTaskTomorrow}
+            deleteTask={deleteTask}
+            duplicateTask={duplicateTask}
+          />
+        </BoxContainer>
+      </Router>
+    </ThemeProvider>
   );
 };
 
