@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+
 const Header = styled.header`
-  background-color: #5fa8d3;
-  color: white;
+  background-color: ${props => props.theme.header};
+  color: ${props => props.theme.text}
   margin: 0;
   display: flex;
   justify-content: space-around;
@@ -14,7 +15,7 @@ const Header = styled.header`
 `;
 
 const NavItem = styled.li.attrs((props) => ({
-  isHeader: props.isHeader,
+  isHeader: props.isHeader
 }))`
   list-style: none;
   display: inline;
